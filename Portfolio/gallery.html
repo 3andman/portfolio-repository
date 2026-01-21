@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dylan Samaan — Digital Art</title>
+
+</head>
+
+<body>
+    <div class="hud">
+        <div class="screen">
+            <h1 class="hud-title">Gallery</h1>
+
+            <div class="menu-buttons">
+                <button onclick="window.location.href='animations.html'"
+                    data-desc="Two of the animation projects I've created.">
+                    Animations
+                </button>
+
+                <button onclick="window.location.href='art.html'"
+                    data-desc="A gallery of some of my digital art creations.">
+                    Digital Art
+                </button>
+
+    
+                <button onclick="window.location.href='index.html'" data-desc="Return to the main portfolio menu.">
+                    ← Back to Main Menu
+                </button>
+            </div>
+        </div>
+
+        <!-- Bubble pops OUTSIDE the screen (below it) -->
+        <div id="speech" class="speech-pop" aria-live="polite">
+            <p id="speechText"></p>
+        </div>
+    </div>
+
+    <!-- Hover sound -->
+    <audio id="hoverSound" src="assets/sounds/hover.mp3" preload="auto"></audio>
+
+    <!-- Bubble + sound interaction -->
+    <script>
+        const speech = document.getElementById("speech");
+        const speechText = document.getElementById("speechText");
+        const menu = document.querySelector(".menu-buttons");
+        const hoverSound = document.getElementById("hoverSound");
+
+        // Sound
+        let lastPlayed = 0;
+        const SOUND_COOLDOWN = 120;
+        function playHoverSound() {
+            const now = performance.now();
+            if (now - lastPlayed < SOUND_COOLDOWN) return;
+            lastPlayed = now;
+            hoverSound.currentTime = 0;
+            hoverSound.volume = 0.5; // subtle
+            hoverSound.play().catch(() => { });
+        }
+
+        // Bubble
+        let hideTimer = null;
+        const HIDE_DELAY = 120;
+
+        function showBubble(text) {
+            if (hideTimer) clearTimeout(hideTimer);
+            speechText.textContent = text;
+            speech.classList.add("visible");
+        }
+
+        function hideBubbleSoon() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => speech.classList.remove("visible"), HIDE_DELAY);
+        }
+
+        // Pointer
+        menu.addEventListener("pointerover", (e) => {
+            const btn = e.target.closest("button");
+            if (!btn) return;
+            showBubble(btn.getAttribute("data-desc") || "");
+            playHoverSound();
+        });
+
+        menu.addEventListener("pointerleave", hideBubbleSoon);
+
+        // Keyboard
+        menu.addEventListener("focusin", (e) => {
+            const btn = e.target.closest("button");
+            if (!btn) return;
+            showBubble(btn.getAttribute("data-desc") || "");
+            playHoverSound();
+        });
+
+        menu.addEventListener("focusout", (e) => {
+            const next = e.relatedTarget;
+            if (next && menu.contains(next)) return;
+            hideBubbleSoon();
+        });
+    </script>
+</body>
+
+</html>

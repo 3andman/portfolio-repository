@@ -5,9 +5,6 @@
     <meta charset="UTF-8" />
     <title>Dylan Samaan — Portfolio</title>
 
-    <!-- Pixel Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-
     <!-- Shared styles -->
     <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -25,13 +22,13 @@
                 My Arcade
             </button>
 
-            <button onclick="window.location.href='Digital-Art.html'"
+            <button onclick="window.location.href='gallery.html'"
                 data-desc="A gallery of digital artworks I've created over the years.">
-                Digital Art
+                Gallery
             </button>
 
             <button onclick="window.location.href='About-Me.html'"
-                data-desc="My motivation, my goals, and my contact information.">
+                data-desc="My motivation, my goals, and more information.">
                 About Me
             </button>
         </div>
@@ -43,45 +40,76 @@
     </div>
 </div>
 
-    <!-- Speech bubble interaction -->
+<audio id="hoverSound" src="assets/sounds/hover.mp3" preload="auto"></audio>
+
 <script>
+  // Elements
   const speech = document.getElementById("speech");
   const speechText = document.getElementById("speechText");
   const menu = document.querySelector(".menu-buttons");
+  const hoverSound = document.getElementById("hoverSound");
 
+  // Sound settings
+  let lastPlayed = 0;
+  const SOUND_COOLDOWN = 120;
+
+  function playHoverSound() {
+    const now = performance.now();
+    if (now - lastPlayed < SOUND_COOLDOWN) return;
+
+    lastPlayed = now;
+    hoverSound.currentTime = 0;
+    hoverSound.volume = 0.5;
+    hoverSound.play().catch(() => { });
+  }
+
+  // Bubble show/hide
   let hideTimer = null;
+  const HIDE_DELAY = 120;
 
-  function show(text) {
+  function showBubble(text) {
     if (hideTimer) clearTimeout(hideTimer);
     speechText.textContent = text;
     speech.classList.add("visible");
   }
 
-  function hideSoon() {
+  function hideBubbleSoon() {
     if (hideTimer) clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => speech.classList.remove("visible"), 120);
+    hideTimer = setTimeout(() => {
+      speech.classList.remove("visible");
+    }, HIDE_DELAY);
   }
 
+  // Pointer behavior
   menu.addEventListener("pointerover", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
-    show(btn.getAttribute("data-desc") || "");
+
+    const desc = btn.getAttribute("data-desc") || "";
+    showBubble(desc);
+    playHoverSound();
   });
 
-  menu.addEventListener("pointerleave", hideSoon);
+  menu.addEventListener("pointerleave", hideBubbleSoon);
 
-  // Keyboard support
+  // Keyboard behavior
   menu.addEventListener("focusin", (e) => {
     const btn = e.target.closest("button");
-    if (btn) show(btn.getAttribute("data-desc") || "");
+    if (!btn) return;
+
+    const desc = btn.getAttribute("data-desc") || "";
+    showBubble(desc);
+    playHoverSound();
   });
 
   menu.addEventListener("focusout", (e) => {
     const next = e.relatedTarget;
     if (next && menu.contains(next)) return;
-    hideSoon();
+    hideBubbleSoon();
   });
 </script>
+
+
 </body>
 
 </html>
