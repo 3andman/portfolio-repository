@@ -3,7 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: #d6b7d6;
+  background: #4f5249;
   font-family: "Press Start 2P", system-ui, sans-serif;
 }
 
@@ -73,7 +73,7 @@ body {
 }
 
 .menu-buttons button:hover {
-  background: #fbabbb;
+  background: #e0f0c3;
   box-shadow: 0 6px 0 #000;
   transform: translateY(-2px);
 }
