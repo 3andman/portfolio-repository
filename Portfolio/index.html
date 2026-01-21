@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Dylan Samaan — Portfolio</title>
+
+    <!-- Pixel Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+    <!-- Shared styles -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+<div class="hud">
+    <div class="screen">
+        <h1 class="hud-title">
+            Dylan Samaan
+        </h1>
+
+        <div class="menu-buttons">
+            <button onclick="window.location.href='sandman-arcade/'"
+                data-desc="Interactive projects and small games exploring play, systems, and user interaction (p5.js / Java).">
+                Interactive Works
+            </button>
+
+            <button onclick="window.location.href='Digital-Art.html'"
+                data-desc="Digital and generative visuals exploring form, motion, abstraction, and composition.">
+                Digital Art
+            </button>
+
+            <button onclick="window.location.href='About-Me.html'"
+                data-desc="Artist statement, interests, tools, and contact info — the context behind the work.">
+                About Me
+            </button>
+        </div>
+    </div>
+
+    <!-- Bubble pops OUTSIDE the screen (below it) -->
+    <div id="speech" class="speech-pop" aria-live="polite">
+        <p id="speechText"></p>
+    </div>
+</div>
+
+    <!-- Speech bubble interaction -->
+<script>
+  const speech = document.getElementById("speech");
+  const speechText = document.getElementById("speechText");
+  const menu = document.querySelector(".menu-buttons");
+
+  let hideTimer = null;
+
+  function show(text) {
+    if (hideTimer) clearTimeout(hideTimer);
+    speechText.textContent = text;
+    speech.classList.add("visible");
+  }
+
+  function hideSoon() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => speech.classList.remove("visible"), 120);
+  }
+
+  menu.addEventListener("pointerover", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    show(btn.getAttribute("data-desc") || "");
+  });
+
+  menu.addEventListener("pointerleave", hideSoon);
+
+  // Keyboard support
+  menu.addEventListener("focusin", (e) => {
+    const btn = e.target.closest("button");
+    if (btn) show(btn.getAttribute("data-desc") || "");
+  });
+
+  menu.addEventListener("focusout", (e) => {
+    const next = e.relatedTarget;
+    if (next && menu.contains(next)) return;
+    hideSoon();
+  });
+</script>
+</body>
+
+</html>

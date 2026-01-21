@@ -1,0 +1,254 @@
+/* =========================
+   Global reset
+   ========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+   Root variables
+   ========================= */
+:root {
+  --bg: #0b0c10;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-border: rgba(255, 255, 255, 0.14);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.65);
+  --btn: rgba(255, 255, 255, 0.08);
+  --btn-border: rgba(255, 255, 255, 0.18);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --radius: 18px;
+}
+
+@font-face {
+  font-family: "PortFont";
+  src: url("../assets/fonts/PortFont.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================
+   Page base
+   ========================= */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "PortFont", system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 20% 10%, rgba(255, 255, 255, 0.08), transparent 55%),
+    radial-gradient(900px 600px at 85% 25%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(1000px 900px at 40% 90%, rgba(255, 255, 255, 0.05), transparent 60%),
+    var(--bg);
+
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* =========================
+   Outer container
+   ========================= */
+.hud {
+  width: min(860px, 100%);
+}
+
+/* =========================
+   Main panel
+   ========================= */
+.screen {
+  position: relative;
+  /* IMPORTANT for speech bubble */
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(28px, 4vw, 46px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+/* Subtle shine */
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0.12),
+      transparent 30%,
+      transparent 70%,
+      rgba(255, 255, 255, 0.08));
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* =========================
+   Title
+   ========================= */
+.hud-title {
+  margin: 0 0 26px 0;
+
+  font-size: clamp(50px, 4vw, 46px);
+  line-height: 1.5;
+  letter-spacing: 0.9px;
+
+  white-space: nowrap;
+  overflow: hidden;
+
+ 
+  
+}
+
+/* =========================
+   Speech bubble (overlay)
+   ========================= */
+/* Speech bubble (in-flow, dynamic height) */
+/* Needed so the popout can anchor to the hud area */
+.hud {
+  position: relative;
+}
+
+/* Bubble that pops out under the main screen */
+.speech-pop {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 20px);
+  /* more separation from screen */
+  transform: translateX(-50%) translateY(-10px);
+
+  width: min(820px, 100%);
+  /* BIGGER */
+  max-width: calc(100% - 16px);
+
+  padding: 22px 26px;
+  /* BIGGER padding */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 10;
+}
+
+.speech-pop.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.speech-pop p {
+  margin: 0;
+  font-size:30px;
+  /* slightly larger text */
+  line-height: 2.1;
+  letter-spacing: 0.35px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+
+
+
+/* =========================
+   Menu buttons
+   ========================= */
+.menu-buttons {
+  display: grid;
+  gap: 18px;
+  /* more vertical breathing room */
+  margin-top: 32px;
+}
+
+.menu-buttons button {
+  appearance: none;
+  border: 1px solid var(--btn-border);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: 16px;
+
+  padding: 22px 22px;
+  /* BIGGER buttons */
+  font-size: 30px;
+  /* slightly larger text */
+  line-height: 1.6;
+
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+
+  transition:
+    transform 140ms ease,
+    background 140ms ease,
+    border-color 140ms ease;
+}
+.menu-buttons button::after {
+  content: "→";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.75;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+/* Hover state */
+.menu-buttons button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-3px);
+}
+
+/* Arrow animation on hover */
+.menu-buttons button:hover::after {
+  transform: translateY(-50%) translateX(6px);
+  opacity: 1;
+}
+
+/* Keyboard focus (important for accessibility) */
+.menu-buttons button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 4px;
+}
+
+/* Active (click) state */
+.menu-buttons button:active {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Back button (top-left)
+   ========================= */
+.back-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 9999;
+
+  text-decoration: none;
+  font-family: "PortFont", monospace;
+  font-size: 25px;
+  color: rgba(255, 255, 255, 0.85);
+
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
