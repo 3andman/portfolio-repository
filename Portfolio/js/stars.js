@@ -1,17 +1,7 @@
 /**
  * Inside Dylan's Mind
  * Dylan Samaan
- *
- * Oh my gosh I dug myself into a hole with this one.
- * I wanted a stary sky that flickers, with shooting stars and
- * a meteor shower when you press the mouse. I want a nice moon and montains
- * and a foreground with a road and trees that are moving as if the
- * viewer is flying to the left following a car. I want the car to look
- * specifically like my favorite car lol, and I want it to flash it's
- * headlights when you click spacebar.
- *
- *I did not get to make the car in time :(
- *I'll come back to the project whenever I have free time.
+
  */
 
 "use strict";
@@ -32,15 +22,20 @@ let layla;
 
 function preload() {
   soundFormats("mp3");
-  layla = loadSound("./layla.mp3");
+  layla = loadSound("assets/sounds/layla.mp3");
+  if (typeof soundFormats === "function") {
+    soundFormats("mp3", "wav");
+  }
 }
 
 function setup() {
   createCanvas(1000, 800);
   noStroke(); //Defaults shapes to have no stroke
+  textSize(18);
+  fill(255);
 
   layla.play();
-  layla.setVolume(0.3);
+  layla.setVolume(0.08);
 
   // Road Lines Setup
   //Loops them and places them at equal X spacing, X changes each frame
@@ -114,7 +109,7 @@ function draw() {
       -1,
       1,
       10, //Brightness goes between 10 and 300
-      300
+      300,
     );
     fill(brightness); //No color
     ellipse(star.x, star.y, star.size);
@@ -299,6 +294,7 @@ function draw() {
       line.x = width;
     }
   }
+    text("Click Screen", 20, 780);
 }
 
 // Spawn Shooting Stars
@@ -318,6 +314,8 @@ function mousePressed() {
       vx: cos(angle) * speed, // Horizontal speed
       vy: sin(angle) * speed * 0.5, // Vertical slower speed
       len: random(1, 3), // Random tail lenght
+      
+      
     });
   }
 }

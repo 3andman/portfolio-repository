@@ -5,15 +5,18 @@
     <meta charset="UTF-8" />
     <title>Animations — Dylan Samaan</title>
 
+    <!-- shared styles -->
     <link rel="stylesheet" href="css/style.css" />
 
     <style>
+        /* page layout */
         .page {
-            width: min(1600px, 100%);
+            width: min(1400px, 100%);
             margin: 0 auto;
-            padding: 90px 18px 50px;
+            padding: 110px 24px 60px;
         }
 
+        /* page title */
         .page-title {
             margin: 0 0 28px 0;
             font-size: clamp(18px, 2.6vw, 28px);
@@ -23,15 +26,15 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Two videos side-by-side on desktop */
+        /* video layout (2 columns) */
         .video-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 22px;
+            gap: 28px;
             align-items: start;
         }
 
-        /* Card is vertical: video on top, text underneath */
+        /* video card styling */
         .video-card {
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.14);
@@ -43,6 +46,7 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
+        /* video player sizing */
         video {
             width: 100%;
             aspect-ratio: 16 / 9;
@@ -52,6 +56,7 @@
             background: rgba(0, 0, 0, 0.35);
         }
 
+        /* text under each video */
         .video-info {
             padding: 12px 6px 6px;
         }
@@ -72,20 +77,11 @@
             color: rgba(255, 255, 255, 0.72);
         }
 
-        /* Mobile: stack them (one per row) */
-        @media (max-width: 820px) {
-            .page {
-                padding-top: 95px;
-            }
-
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 
 <body>
+    <!-- back navigation -->
     <a href="gallery.html" class="back-button">← Back to Gallery</a>
 
     <main class="page">
@@ -93,7 +89,7 @@
 
         <section class="video-grid">
             <article class="video-card">
-                <video controls preload="metadata" data-volume="0.2">
+                <video controls preload="metadata" data-volume="0.10">
                     <source src="assets/videos/animation01.mp4" type="video/mp4" />
                 </video>
                 <div class="video-info">
@@ -115,13 +111,21 @@
     </main>
 
     <script>
-        // Apply per-video volume via data-volume
-        document.querySelectorAll("video").forEach((video) => {
+        // set the volume for any video that has data-volume
+        const videos = document.querySelectorAll("video");
+
+        // loop through each video and apply its volume
+        videos.forEach((video) => {
             const vol = parseFloat(video.dataset.volume);
-            if (!isNaN(vol)) {
+            if (isNaN(vol)) return;
+
+            // set the starting volume
+            video.volume = vol;
+
+            // set it again when the user hits play
+            video.addEventListener("play", () => {
                 video.volume = vol;
-                video.addEventListener("play", () => (video.volume = vol));
-            }
+            });
         });
     </script>
 </body>

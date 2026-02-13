@@ -5,31 +5,60 @@
   <meta charset="UTF-8" />
   <title>Sandman Arcade</title>
 
-  <!-- Pixel Font -->
+  <!-- pixel font -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 
-  <!-- Style -->
+  <!-- style -->
   <link rel="stylesheet" href="css/style.css" />
-  
 </head>
 
-<!-- Menu screen and buttons -->
 <body>
-<div class="arcade">
-  <div class="screen">
-    <h1 class="arcade-title">
-      Sandman<br />Arcade
-    </h1>
+  <div class="arcade">
+    <div class="screen">
+      <h1 class="arcade-title">
+        Sandman<br />Arcade
+      </h1>
 
-    <div class="menu-buttons">
-      <button onclick="window.location.href='Catchem-Coast.html'">Catch'em Coast</button>
-      <button onclick="window.location.href='Elytra-Escape.html'">Elytra Escape</button>
-      <button onclick="window.location.href='Gannons-Gallery.html'">Gannon's Gallery</button>
+      <div class="menu-buttons">
+        <button onclick="window.location.href='Catchem-Coast.html'">Catch'em Coast</button>
+        <button onclick="window.location.href='Elytra-Escape.html'">Elytra Escape</button>
+        <button onclick="window.location.href='Gannons-Gallery.html'">Gannon's Gallery</button>
+      </div>
     </div>
   </div>
-</div>
-</body>
 
-<a href="../index.html" class="back-button">← Back to Home</a>
+  <!-- back button -->
+  <a href="../index.html" class="back-button">← Back to Home</a>
+
+  <!-- hover sound -->
+  <audio id="hoverSound" src="assets/menu/hover.mp3" preload="auto"></audio>
+
+  <script>
+    // grab elements
+    const hoverSound = document.getElementById("hoverSound");
+    const buttons = document.querySelectorAll(".menu-buttons button");
+
+    // sound settings
+    let lastPlayed = 0;
+    const soundCooldown = 220;
+
+    // play hover sound with cooldown
+    function playHoverSound() {
+      const now = performance.now();
+      if (now - lastPlayed < soundCooldown) return;
+
+      lastPlayed = now;
+      hoverSound.currentTime = 0;
+      hoverSound.volume = 0.07;
+      hoverSound.play().catch(() => { });
+    }
+
+    // attach hover + focus events
+    buttons.forEach((btn) => {
+      btn.addEventListener("mouseenter", playHoverSound);
+      btn.addEventListener("focus", playHoverSound);
+    });
+  </script>
+</body>
 
 </html>
