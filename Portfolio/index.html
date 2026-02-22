@@ -3,122 +3,133 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Dylan Samaan — Portfolio</title>
+  <title>Dylan Samaan's Portfolio</title>
 
-  <!-- shared styles -->
+  <!-- main stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body>
+<body class="home">
   <div class="hud">
     <div class="screen">
+
+      <!-- main title -->
       <h1 class="hud-title">Dylan Samaan</h1>
 
+      <!-- menu buttons -->
       <div class="menu-buttons">
+
+        <!-- arcade page button -->
         <button data-link="sandman-arcade/" data-desc="My trio of Arcade-style minigames (p5.js / Java).">
           My Arcade
         </button>
 
+        <!-- gallery page button -->
         <button data-link="gallery.html" data-desc="A gallery of digital artworks I've created over the years.">
           Gallery
         </button>
 
+        <!-- about page button -->
         <button data-link="about.html" data-desc="My motivation, my goals, and more information.">
           About Me
         </button>
+
       </div>
     </div>
 
-    <!-- speech bubble -->
+    <!-- speech bubble container -->
     <div id="speech" class="speech-pop" aria-live="polite">
       <p id="speechText"></p>
     </div>
   </div>
 
-  <!-- hover sound -->
+  <!-- hover sound effect -->
   <audio id="hoverSound" src="assets/sounds/hover.mp3" preload="auto"></audio>
 
   <script>
-    // grab the parts we need
+
+    // get main elements from the page
     const menu = document.querySelector(".menu-buttons");
     const speech = document.getElementById("speech");
     const speechText = document.getElementById("speechText");
     const hoverSound = document.getElementById("hoverSound");
 
-    // basic settings
-    let lastPlayed = 0;
-    const soundCooldown = 120;
-    const hideDelay = 120;
-    let hideTimer = null;
+    // sound timing control variables
+    let lastPlayed = 0; // stores last sound time
+    const soundCooldown = 120; // delay between sounds
+    const hideDelay = 120; // delay before hiding bubble
+    let hideTimer = null; // stores timeout id
 
-    // play the hover sound (with a small cooldown)
+    // plays hover sound with cooldown
     function playHoverSound() {
-      const now = performance.now();
-      if (now - lastPlayed < soundCooldown) return;
+      const now = performance.now(); // current time
 
-      lastPlayed = now;
-      hoverSound.currentTime = 0;
-      hoverSound.volume = 0.3;
-      hoverSound.play().catch(() => { });
+      if (now - lastPlayed < soundCooldown) return; // stops if too soon
+
+      lastPlayed = now; // update last played time
+      hoverSound.currentTime = 0; // reset sound
+      hoverSound.volume = 0.8; // lower volume
+      hoverSound.play().catch(() => { }); // play safely
     }
 
-    // show the bubble text
+    // shows speech bubble with text
     function showBubble(text) {
-      if (hideTimer) clearTimeout(hideTimer);
-      speechText.textContent = text;
-      speech.classList.add("visible");
+      if (hideTimer) clearTimeout(hideTimer); // cancel hide timer
+
+      speechText.textContent = text; // update text
+      speech.classList.add("visible"); // make bubble visible
     }
 
-    // hide the bubble after a short delay
+    // hides speech bubble after delay
     function hideBubble() {
-      if (hideTimer) clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => speech.classList.remove("visible"), hideDelay);
+      if (hideTimer) clearTimeout(hideTimer); // cancel old timer
+
+      hideTimer = setTimeout(() => {
+        speech.classList.remove("visible"); // hide bubble
+      }, hideDelay);
     }
 
-    // handle hover and click using one listener
+    // handles hover events on menu
     menu.addEventListener("pointerover", (e) => {
-      const btn = e.target.closest("button");
-      if (!btn) return;
 
-      // update bubble text
-      showBubble(btn.dataset.desc || "");
+      const btn = e.target.closest("button"); // checks if button
+      if (!btn) return; // ignore if not
 
-      // play the ui sound
-      playHoverSound();
+      showBubble(btn.dataset.desc || ""); // show description
+      playHoverSound(); // play sound
     });
 
-    // hide bubble when leaving the menu area
+    // hides bubble when mouse leaves menu
     menu.addEventListener("pointerleave", hideBubble);
 
-    // go to the page when you click a button
+    // handles button clicks
     menu.addEventListener("click", (e) => {
-      const btn = e.target.closest("button");
-      if (!btn) return;
 
-      // open the link for that button
-      window.location.href = btn.dataset.link;
+      const btn = e.target.closest("button"); // checks if button
+      if (!btn) return; // ignore if not
+
+      window.location.href = btn.dataset.link; // go to page
     });
 
-    // show bubble + sound for keyboard focus
+    // handles keyboard focus
     menu.addEventListener("focusin", (e) => {
-      const btn = e.target.closest("button");
-      if (!btn) return;
 
-      // update bubble text
-      showBubble(btn.dataset.desc || "");
+      const btn = e.target.closest("button"); // checks if button
+      if (!btn) return; // ignore if not
 
-      // play the ui sound
-      playHoverSound();
+      showBubble(btn.dataset.desc || ""); // show description
+      playHoverSound(); // play sound
     });
 
-    // hide bubble when focus leaves the menu
+    // hides bubble when focus leaves menu
     menu.addEventListener("focusout", (e) => {
-      const next = e.relatedTarget;
-      if (next && menu.contains(next)) return;
 
-      // remove bubble
-      hideBubble();
+      const next = e.relatedTarget; // element gaining focus
+      if (next && menu.contains(next)) return; // ignore if still inside
+
+      hideBubble(); // hide bubble
     });
+
   </script>
 </body>
 

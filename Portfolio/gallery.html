@@ -3,143 +3,82 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Gallery — Dylan Samaan</title>
+    <title>My Gallery</title>
 
-    <!-- shared styles -->
+    <!-- main stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <style>
-        /* page layout */
-        .page {
-            width: min(1100px, 100%);
-            margin: 0 auto;
-            padding: 110px 24px 60px;
-        }
-
-        /* page title */
-        .page-title {
-            margin: 0 0 28px 0;
-              font-size: clamp(34px, 4vw, 46px);
-            line-height: 1.3;
-            letter-spacing: 0.5px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        /* menu container */
-        .menu {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 18px;
-            width: min(900px, 100%);
-            margin: 0 auto;
-        }
-
-        /* menu card */
-        .card {
-            text-decoration: none;
-            color: inherit;
-
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
-            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
-            padding: 20px;
-
-            display: grid;
-            gap: 10px;
-
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-
-            transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
-        }
-
-        /* hover effect */
-        .card:hover {
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.10);
-            border-color: rgba(255, 255, 255, 0.28);
-        }
-
-        /* card title */
-        .card h2 {
-            margin: 0;
-            font-size: 35px;
-            line-height: 1.6;
-            letter-spacing: 0.3px;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        /* card description */
-        .card p {
-            margin: 0;
-            font-size: 25px;
-            line-height: 1;
-            color: rgba(255, 255, 255, 0.72);
-        }
-
-
-    </style>
 </head>
 
 <body>
-    <!-- back navigation -->
+
+    <!-- back button to homepage -->
     <a href="index.html" class="back-button">← Back to Menu</a>
 
     <main class="page">
+
+        <!-- page title -->
         <h1 class="page-title">Gallery</h1>
 
+        <!-- gallery navigation cards -->
         <section class="menu">
+
+            <!-- animations link -->
             <a class="card" href="animations.html">
                 <h2>Animations</h2>
                 <p>Two short animations of differient mediums.</p>
-
             </a>
 
-            <a class="card" href="assets/pdfs/cover.pdf" target="_blank" rel="noopener">
-                <h2>Digital Poster Design</h2>
-                <p>Final design along with itterations during design process.</p>
-
+            <!-- magazine cover link -->
+            <a class="card" href="cover.html" target="_blank" rel="noopener">
+                <h2>Magazine Cover Design</h2>
+                <p>Design project with iterations.</p>
             </a>
 
+            <!-- animated script link -->
             <a class="card" href="script.html">
                 <h2>Animated Script</h2>
                 <p>Interactive generative sketch.</p>
-
             </a>
+
         </section>
     </main>
 
-    <!-- hover sound -->
+    <!-- hover sound effect -->
     <audio id="hoverSound" src="assets/sounds/hover.mp3" preload="auto"></audio>
 
     <script>
-        // grab elements
+
+        // get sound element
         const hoverSound = document.getElementById("hoverSound");
+
+        // get all gallery cards
         const cards = document.querySelectorAll(".card");
 
-        // sound timing values
-        let lastPlayed = 0;
-        const soundCooldown = 120;
+    // sound timing control variables
+    let lastPlayed = 0; // stores last sound time
+    const soundCooldown = 120; // delay between sounds
+    const hideDelay = 120; // delay before hiding bubble
+    let hideTimer = null; // stores timeout id
 
-        // play hover sound with cooldown
-        function playHoverSound() {
-            const now = performance.now();
-            if (now - lastPlayed < soundCooldown) return;
+    // plays hover sound with cooldown
+    function playHoverSound() {
+        const now = performance.now(); // current time
 
-            lastPlayed = now;
-            hoverSound.currentTime = 0;
-            hoverSound.volume = 0.3;
-            hoverSound.play().catch(() => { });
-        }
+        if (now - lastPlayed < soundCooldown) return; // stops if too soon
 
-        // add hover and focus sounds to each card
+        lastPlayed = now; // update last played time
+        hoverSound.currentTime = 0; // reset sound
+        hoverSound.volume = 0.8; // volume
+        hoverSound.play().catch(() => { }); // play safely
+    }
+
+        // adds hover + keyboard sound to each card
         cards.forEach((card) => {
-            card.addEventListener("mouseenter", playHoverSound);
-            card.addEventListener("focus", playHoverSound);
+
+            card.addEventListener("mouseenter", playHoverSound); // mouse hover
+
         });
+
     </script>
 </body>
 

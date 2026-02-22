@@ -3,131 +3,74 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Animations — Dylan Samaan</title>
+    <title>Animations</title>
 
-    <!-- shared styles -->
+    <!-- main stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <style>
-        /* page layout */
-        .page {
-            width: min(1400px, 100%);
-            margin: 0 auto;
-            padding: 110px 24px 60px;
-        }
-
-        /* page title */
-        .page-title {
-            margin: 0 0 28px 0;
-            font-size: clamp(18px, 2.6vw, 28px);
-            line-height: 1.3;
-            letter-spacing: 0.5px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        /* video layout (2 columns) */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 28px;
-            align-items: start;
-        }
-
-        /* video card styling */
-        .video-card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 18px;
-            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.35);
-            padding: 12px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        /* video player sizing */
-        video {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            object-fit: contain;
-            display: block;
-            border-radius: 14px;
-            background: rgba(0, 0, 0, 0.35);
-        }
-
-        /* text under each video */
-        .video-info {
-            padding: 12px 6px 6px;
-        }
-
-        .video-info h2 {
-            margin: 0 0 10px 0;
-            font-size: 12px;
-            line-height: 1.6;
-            letter-spacing: 0.3px;
-            color: rgba(255, 255, 255, 0.88);
-            font-weight: 400;
-        }
-
-        .caption {
-            margin: 0;
-            font-size: 10px;
-            line-height: 1.9;
-            color: rgba(255, 255, 255, 0.72);
-        }
-
-    </style>
 </head>
 
 <body>
-    <!-- back navigation -->
+
+    <!-- back button to gallery -->
     <a href="gallery.html" class="back-button">← Back to Gallery</a>
 
-    <main class="page">
+    <main class="page animations-page">
+
+        <!-- page title -->
         <h1 class="page-title">Animations</h1>
 
+        <!-- video layout grid -->
         <section class="video-grid">
+
+            <!-- first animation -->
             <article class="video-card">
                 <video controls preload="metadata" data-volume="0.10">
                     <source src="assets/videos/animation01.mp4" type="video/mp4" />
                 </video>
+
+                <!-- video info -->
                 <div class="video-info">
-                    <h2>Animation 01</h2>
-                    <p class="caption">Short description.</p>
+                    <h2>Stop Motion Animation</h2>
                 </div>
             </article>
 
+            <!-- second animation -->
             <article class="video-card">
                 <video controls preload="metadata">
                     <source src="assets/videos/animation02.mp4" type="video/mp4" />
                 </video>
+
+                <!-- video info -->
                 <div class="video-info">
-                    <h2>Animation 02</h2>
-                    <p class="caption">Short description.</p>
+                    <h2>Short Hand Drawn Animation</h2>
                 </div>
             </article>
+
         </section>
     </main>
 
     <script>
-        // set the volume for any video that has data-volume
+
+        // get all video elements
         const videos = document.querySelectorAll("video");
 
-        // loop through each video and apply its volume
+        // video formatting
         videos.forEach((video) => {
-            const vol = parseFloat(video.dataset.volume);
-            if (isNaN(vol)) return;
 
-            // set the starting volume
-            video.volume = vol;
+            const vol = parseFloat(video.dataset.volume); // read custom volume value
+            if (isNaN(vol)) return; // skip if no value
 
-            // set it again when the user hits play
+            video.volume = vol; // set starting volume
+
+            // reset volume when video plays
             video.addEventListener("play", () => {
                 video.volume = vol;
             });
+
         });
+
     </script>
+
 </body>
 
 </html>

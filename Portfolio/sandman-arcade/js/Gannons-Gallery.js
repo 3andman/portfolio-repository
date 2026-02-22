@@ -24,7 +24,7 @@ let fallingPots = []; // currently active falling pots
 let nextPotTimer = 0; // frames until next pot spawn
 let difficulty = 0.5; // global difficulty multiplier
 const difInc = 0.00015; // difficulty ramp per frame
-const difMax = 2.8; // cap difficulty multiplier
+const difMax = 10.8; // cap difficulty multiplier
 
 //  SLING (player)
 const sling = { x: 0, y: 0, size: 500, targetX: 0 };
